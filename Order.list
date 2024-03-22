@@ -1,2 +1,3 @@
 0001-debian-Add-OBS-CI-workflows.patch
 0002-tty-Support-Chinese-character-output-in-tty.patch
+0003-defconfig-Add-deepin-desktop-defconfigs.patch
