@@ -1,0 +1,274 @@
+From 69aca0f7329c2c6bc4a15690f89873e47e15bc38 Mon Sep 17 00:00:00 2001
+From: WangYuli <wangyuli@uniontech.com>
+Date: Thu, 14 Mar 2024 16:54:45 +0800
+Subject: [PATCH 1/2] debian: Add OBS CI workflows
+
+Add OBS CI configs so that we can be build kernel by OBS.
+It could make life easier.
+
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+---
+ .gitignore                  |  2 +-
+ MAINTAINERS                 |  6 ++++++
+ debian/changelog            |  5 +++++
+ debian/control              | 36 ++++++++++++++++++++++++++++++++++++
+ debian/copyright            | 16 ++++++++++++++++
+ debian/deepin/OWNERS        | 25 +++++++++++++++++++++++++
+ debian/deepin/workflows.yml | 36 ++++++++++++++++++++++++++++++++++++
+ debian/files                |  1 +
+ debian/rules                | 33 +++++++++++++++++++++++++++++++++
+ debian/source/format        |  1 +
+ debian/source/local-options |  2 ++
+ 11 files changed, 162 insertions(+), 1 deletion(-)
+ create mode 100644 debian/changelog
+ create mode 100644 debian/control
+ create mode 100644 debian/copyright
+ create mode 100644 debian/deepin/OWNERS
+ create mode 100644 debian/deepin/workflows.yml
+ create mode 100644 debian/files
+ create mode 100644 debian/rules
+ create mode 100644 debian/source/format
+ create mode 100644 debian/source/local-options
+
+diff --git a/.gitignore b/.gitignore
+index 98274e1160d7..2cc3da872f91 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -79,7 +79,7 @@ modules.order
+ #
+ # Debian directory (make deb-pkg)
+ #
+-/debian/
++# /debian/
+ 
+ #
+ # Snap directory (make snap-pkg)
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a7c4cf8201e0..712b0dd49ecb 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5810,6 +5810,12 @@ F:	arch/mips/dec/
+ F:	arch/mips/include/asm/dec/
+ F:	arch/mips/include/asm/mach-dec/
+ 
++DEEPIN DEB BUILD RULES
++M:	"WangYuli" <wangyuli@uniontech.com>
++S:	Maintained
++W:	https://build.deepin.com/
++F:	debian/
++
+ DEFXX FDDI NETWORK DRIVER
+ M:	"Maciej W. Rozycki" <macro@orcam.me.uk>
+ S:	Maintained
+diff --git a/debian/changelog b/debian/changelog
+new file mode 100644
+index 000000000000..24746f301e38
+--- /dev/null
++++ b/debian/changelog
+@@ -0,0 +1,5 @@
++linux-upstream (6.5.4-g0026e9876fcb-2) apricot; urgency=low
++
++  * Custom built Linux kernel.
++
++ -- matrix <matrix@matrix-PC>  Wed, 20 Sep 2023 11:30:50 +0800
+diff --git a/debian/control b/debian/control
+new file mode 100644
+index 000000000000..66faa32b1069
+--- /dev/null
++++ b/debian/control
+@@ -0,0 +1,36 @@
++Source: linux-upstream
++Section: kernel
++Priority: optional
++Maintainer: matrix <matrix@matrix-PC>
++Rules-Requires-Root: no
++Build-Depends: zstd, bc, debhelper, rsync, kmod, cpio, bison, flex, libelf-dev:native, libssl-dev:native, openssl
++Homepage: https://www.kernel.org/
++
++Package: linux-image-6.5.4
++Architecture: amd64 arm64
++Description: Linux kernel, version 6.5.4
++ This package contains the Linux kernel, modules and corresponding other
++ files, version: 6.5.4.
++
++Package: linux-libc-dev
++Section: devel
++Provides: linux-kernel-headers
++Architecture:  amd64 arm64
++Description: Linux support headers for userspace development
++ This package provides userspaces headers from the Linux kernel.  These headers
++ are used by the installed headers for GNU glibc and other system libraries.
++Multi-Arch: same
++
++Package: linux-headers-6.5.4
++Architecture: amd64 arm64
++Description: Linux kernel headers for 6.5.4 on amd64
++ This package provides kernel header files for 6.5.4 on amd64
++ .
++ This is useful for people who need to build external modules
++
++Package: linux-image-6.5.4-dbg
++Section: debug
++Architecture: amd64 arm64
++Description: Linux kernel debugging symbols for 6.5.4
++ This package will come in handy if you need to debug the kernel. It provides
++ all the necessary debug symbols for the kernel and its modules.
+diff --git a/debian/copyright b/debian/copyright
+new file mode 100644
+index 000000000000..388a204b0b2b
+--- /dev/null
++++ b/debian/copyright
+@@ -0,0 +1,16 @@
++This is a packaged upstream version of the Linux kernel.
++
++The sources may be found at most Linux archive sites, including:
++https://www.kernel.org/pub/linux/kernel
++
++Copyright: 1991 - 2018 Linus Torvalds and others.
++
++The git repository for mainline kernel development is at:
++git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
++
++    This program is free software; you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation; version 2 dated June, 1991.
++
++On Debian GNU/Linux systems, the complete text of the GNU General Public
++License version 2 can be found in `/usr/share/common-licenses/GPL-2'.
+diff --git a/debian/deepin/OWNERS b/debian/deepin/OWNERS
+new file mode 100644
+index 000000000000..e9ec91fe44a0
+--- /dev/null
++++ b/debian/deepin/OWNERS
+@@ -0,0 +1,25 @@
++# See the OWNERS docs at https://go.k8s.io/owners
++
++reviewers:
++- Zeno-sole
++- tsic404
++- hudeng-go
++- myml
++- BLumia
++- xzl01
++- UTsweetyfish
++- Rabenda
++- zccrs
++- justforlxz
++- Clansty
++- chenchongbiao
++- Avenger-285714
++- matrix-wsk
++approvers:
++- Zeno-sole
++- xzl01
++- UTsweetyfish
++- hudeng-go
++- zccrs
++- Avenger-285714
++- matrix-wsk
+diff --git a/debian/deepin/workflows.yml b/debian/deepin/workflows.yml
+new file mode 100644
+index 000000000000..f28845839a64
+--- /dev/null
++++ b/debian/deepin/workflows.yml
+@@ -0,0 +1,36 @@
++test_build:
++  steps:
++    - link_package:
++        source_project: deepin:Develop:main
++        source_package: %{SCM_REPOSITORY_NAME}
++        target_project: deepin:CI:kernel
++
++    - configure_repositories:
++        project: deepin:CI
++        repositories:
++          - name: deepin_develop
++            paths:
++              - target_project: deepin:CI:kernel
++                target_repository: deepin_develop
++            architectures:
++              - x86_64
++              - aarch64
++
++  filters:
++    event: pull_request
++
++tag_build:
++  steps:
++    - trigger_services:
++        project: deepin:Unstable:main
++        package: %{SCM_REPOSITORY_NAME}
++  filters:
++    event: tag_push
++
++commit_build:
++  steps:
++    - trigger_services:
++        project: deepin:Develop:main
++        package: %{SCM_REPOSITORY_NAME}
++  filters:
++    event: push
+diff --git a/debian/files b/debian/files
+new file mode 100644
+index 000000000000..9e3ade3a0a28
+--- /dev/null
++++ b/debian/files
+@@ -0,0 +1 @@
++linux-upstream_6.5.4-g0026e9876fcb-2_source.buildinfo kernel optional
+diff --git a/debian/rules b/debian/rules
+new file mode 100644
+index 000000000000..de27ea110a7a
+--- /dev/null
++++ b/debian/rules
+@@ -0,0 +1,33 @@
++# SPDX-License-Identifier: GPL-2.0
++#!/usr/bin/make -f
++
++srctree ?= .
++KERNELRELEASE = 6.7.9
++DEB_HOST_ARCH ?= $(shell dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null)
++ifneq (,$(filter amd64,$(DEB_HOST_ARCH)))
++BUILD_ARCH = x86
++else
++BUILD_ARCH = ${DEB_HOST_ARCH}
++endif
++
++.PHONY: clean build build-arch build-indep binary binary-arch binary-indep
++
++build-indep:
++build-arch:
++ifneq (,$(filter amd64,$(DEB_HOST_ARCH)))
++	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} 	KERNELRELEASE=$(KERNELRELEASE) 	$(shell $(srctree)/scripts/package/deb-build-option) 	deepin_desktop_common_defconfig all  -j$(shell nproc)
++else ifneq (,$(filter arm64,$(DEB_HOST_ARCH)))
++	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} 	KERNELRELEASE=$(KERNELRELEASE) 	$(shell $(srctree)/scripts/package/deb-build-option) 	deepin_arm_desktop_defconfig  all  -j$(shell nproc)
++endif
++
++build: build-arch
++
++binary-indep:
++binary-arch: build-arch
++	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} 	KERNELRELEASE=$(KERNELRELEASE) intdeb-pkg
++
++clean:
++	rm -rf debian/files debian/linux-*
++	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} clean
++
++binary: binary-arch
+diff --git a/debian/source/format b/debian/source/format
+new file mode 100644
+index 000000000000..d3827e75a5ca
+--- /dev/null
++++ b/debian/source/format
+@@ -0,0 +1 @@
++1.0
+diff --git a/debian/source/local-options b/debian/source/local-options
+new file mode 100644
+index 000000000000..9e4ddc4ab0da
+--- /dev/null
++++ b/debian/source/local-options
+@@ -0,0 +1,2 @@
++diff-ignore
++extend-diff-ignore = .*
+-- 
+2.43.0
+
