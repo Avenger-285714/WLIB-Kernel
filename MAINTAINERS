@@ -5821,6 +5821,15 @@ S:	Maintained
 W:	https://build.deepin.com/
 F:	debian/
 
+DEEPIN KERNEL DEFCONFIGS
+M:	"WangYuli" <wangyuli@uniontech.com>
+S:	Maintained
+W:	https://build.deepin.com/
+F:	arch/arm64/configs/deepin_arm64_desktop_defconfig
+F:	arch/loongarch/configs/deepin_loongarch_desktop_defconfig
+F:	arch/mips/configs/deepin_mips_loongson4000_desktop_defconfig
+F:	arch/x86/configs/deepin_x86_desktop_defconfig
+
 DEFXX FDDI NETWORK DRIVER
 M:	"Maciej W. Rozycki" <macro@orcam.me.uk>
 S:	Maintained
