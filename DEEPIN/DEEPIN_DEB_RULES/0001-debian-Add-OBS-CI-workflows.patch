@@ -1,25 +1,28 @@
-From 69aca0f7329c2c6bc4a15690f89873e47e15bc38 Mon Sep 17 00:00:00 2001
+From 301a90e35790b8d4d52b623bfcb3a18d9d573baf Mon Sep 17 00:00:00 2001
 From: WangYuli <wangyuli@uniontech.com>
 Date: Thu, 14 Mar 2024 16:54:45 +0800
-Subject: [PATCH 1/2] debian: Add OBS CI workflows
+Subject: [PATCH] debian: Add OBS CI workflows
 
 Add OBS CI configs so that we can be build kernel by OBS.
 It could make life easier.
 
+Signed-off-by: HeLugang <helugang@uniontech.com>
+Signed-off-by: LiChenggang <lichenggang@uniontech.com>
+Signed-off-by: XiangZelong <xiangzelong@uniontech.com>
 Signed-off-by: WangYuli <wangyuli@uniontech.com>
 ---
  .gitignore                  |  2 +-
  MAINTAINERS                 |  6 ++++++
  debian/changelog            |  5 +++++
- debian/control              | 36 ++++++++++++++++++++++++++++++++++++
- debian/copyright            | 16 ++++++++++++++++
- debian/deepin/OWNERS        | 25 +++++++++++++++++++++++++
- debian/deepin/workflows.yml | 36 ++++++++++++++++++++++++++++++++++++
+ debian/control              | 36 ++++++++++++++++++++++++++++++++
+ debian/copyright            | 16 +++++++++++++++
+ debian/deepin/OWNERS        | 25 ++++++++++++++++++++++
+ debian/deepin/workflows.yml | 41 +++++++++++++++++++++++++++++++++++++
  debian/files                |  1 +
- debian/rules                | 33 +++++++++++++++++++++++++++++++++
+ debian/rules                | 41 +++++++++++++++++++++++++++++++++++++
  debian/source/format        |  1 +
  debian/source/local-options |  2 ++
- 11 files changed, 162 insertions(+), 1 deletion(-)
+ 11 files changed, 175 insertions(+), 1 deletion(-)
  create mode 100644 debian/changelog
  create mode 100644 debian/control
  create mode 100644 debian/copyright
@@ -168,10 +171,10 @@ index 000000000000..e9ec91fe44a0
 +- matrix-wsk
 diff --git a/debian/deepin/workflows.yml b/debian/deepin/workflows.yml
 new file mode 100644
-index 000000000000..f28845839a64
+index 000000000000..ab952a541cfd
 --- /dev/null
 +++ b/debian/deepin/workflows.yml
-@@ -0,0 +1,36 @@
+@@ -0,0 +1,41 @@
 +test_build:
 +  steps:
 +    - link_package:
@@ -187,8 +190,13 @@ index 000000000000..f28845839a64
 +              - target_project: deepin:CI:kernel
 +                target_repository: deepin_develop
 +            architectures:
-+              - x86_64
 +              - aarch64
++              - i386
++              - loong64
++              - loongarch64
++              - mips64el
++              - riscv64
++              - x86_64
 +
 +  filters:
 +    event: pull_request
@@ -217,18 +225,20 @@ index 000000000000..9e3ade3a0a28
 +linux-upstream_6.5.4-g0026e9876fcb-2_source.buildinfo kernel optional
 diff --git a/debian/rules b/debian/rules
 new file mode 100644
-index 000000000000..de27ea110a7a
+index 000000000000..ba9ec2449fd9
 --- /dev/null
 +++ b/debian/rules
-@@ -0,0 +1,33 @@
+@@ -0,0 +1,41 @@
 +# SPDX-License-Identifier: GPL-2.0
 +#!/usr/bin/make -f
 +
 +srctree ?= .
-+KERNELRELEASE = 6.7.9
++KERNELRELEASE = 6.7.10
 +DEB_HOST_ARCH ?= $(shell dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null)
 +ifneq (,$(filter amd64,$(DEB_HOST_ARCH)))
 +BUILD_ARCH = x86
++else ifneq (,$(filter aarch64,$(DEB_HOST_ARCH)))
++BUILD_ARCH = arm64
 +else
 +BUILD_ARCH = ${DEB_HOST_ARCH}
 +endif
@@ -237,17 +247,23 @@ index 000000000000..de27ea110a7a
 +
 +build-indep:
 +build-arch:
-+ifneq (,$(filter amd64,$(DEB_HOST_ARCH)))
-+	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} 	KERNELRELEASE=$(KERNELRELEASE) 	$(shell $(srctree)/scripts/package/deb-build-option) 	deepin_desktop_common_defconfig all  -j$(shell nproc)
-+else ifneq (,$(filter arm64,$(DEB_HOST_ARCH)))
-+	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} 	KERNELRELEASE=$(KERNELRELEASE) 	$(shell $(srctree)/scripts/package/deb-build-option) 	deepin_arm_desktop_defconfig  all  -j$(shell nproc)
++ifneq (,$(filter aarch64,$(DEB_HOST_ARCH)))
++	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} 	KERNELRELEASE=$(KERNELRELEASE) 	$(shell $(srctree)/scripts/package/deb-build-option) 	deepin_arm64_desktop_defconfig  all  -j$(shell nproc)
++else ifneq (,$(filter amd64,$(DEB_HOST_ARCH)))
++	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} 	KERNELRELEASE=$(KERNELRELEASE) 	$(shell $(srctree)/scripts/package/deb-build-option) 	deepin_x86_desktop_defconfig  all -j$(shell nproc)
++else ifneq (,$(filter loong64,$(DEB_HOST_ARCH)))
++	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} 	KERNELRELEASE=$(KERNELRELEASE) 	$(shell $(srctree)/scripts/package/deb-build-option) 	deepin_loongarch_desktop_defconfig  all  -j$(shell nproc)
++else ifneq (,$(filter loongarch64,$(DEB_HOST_ARCH)))
++	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} 	KERNELRELEASE=$(KERNELRELEASE) 	$(shell $(srctree)/scripts/package/deb-build-option) 	deepin_loongarch_desktop_defconfig  all  -j$(shell nproc)
++else ifneq (,$(filter mips64el,$(DEB_HOST_ARCH)))
++	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} 	KERNELRELEASE=$(KERNELRELEASE) 	$(shell $(srctree)/scripts/package/deb-build-option) 	deepin_mips_loongson4000_desktop_defconfig  all  -j$(shell nproc)
 +endif
 +
 +build: build-arch
 +
-+binary-indep:
++binary-indep: build-indep
 +binary-arch: build-arch
-+	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} 	KERNELRELEASE=$(KERNELRELEASE) intdeb-pkg
++	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} 	KERNELRELEASE=$(KERNELRELEASE) bindeb-pkg
 +
 +clean:
 +	rm -rf debian/files debian/linux-*
@@ -270,5 +286,5 @@ index 000000000000..9e4ddc4ab0da
 +diff-ignore
 +extend-diff-ignore = .*
 -- 
-2.43.0
+2.40.1
 
