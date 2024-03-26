@@ -1,4 +1,4 @@
-From 301a90e35790b8d4d52b623bfcb3a18d9d573baf Mon Sep 17 00:00:00 2001
+From 87c56acc3ffcaa622eda217c17e321b5fdc7399f Mon Sep 17 00:00:00 2001
 From: WangYuli <wangyuli@uniontech.com>
 Date: Thu, 14 Mar 2024 16:54:45 +0800
 Subject: [PATCH] debian: Add OBS CI workflows
@@ -225,12 +225,12 @@ index 000000000000..9e3ade3a0a28
 +linux-upstream_6.5.4-g0026e9876fcb-2_source.buildinfo kernel optional
 diff --git a/debian/rules b/debian/rules
 new file mode 100644
-index 000000000000..ba9ec2449fd9
+index 000000000000..54e88a462b0b
 --- /dev/null
 +++ b/debian/rules
 @@ -0,0 +1,41 @@
-+# SPDX-License-Identifier: GPL-2.0
 +#!/usr/bin/make -f
++# SPDX-License-Identifier: GPL-2.0
 +
 +srctree ?= .
 +KERNELRELEASE = 6.7.10
@@ -239,6 +239,8 @@ index 000000000000..ba9ec2449fd9
 +BUILD_ARCH = x86
 +else ifneq (,$(filter aarch64,$(DEB_HOST_ARCH)))
 +BUILD_ARCH = arm64
++else ifneq (,$(filter loong64,$(DEB_HOST_ARCH)))
++BUILD_ARCH = loongarch
 +else
 +BUILD_ARCH = ${DEB_HOST_ARCH}
 +endif
@@ -252,8 +254,6 @@ index 000000000000..ba9ec2449fd9
 +else ifneq (,$(filter amd64,$(DEB_HOST_ARCH)))
 +	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} 	KERNELRELEASE=$(KERNELRELEASE) 	$(shell $(srctree)/scripts/package/deb-build-option) 	deepin_x86_desktop_defconfig  all -j$(shell nproc)
 +else ifneq (,$(filter loong64,$(DEB_HOST_ARCH)))
-+	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} 	KERNELRELEASE=$(KERNELRELEASE) 	$(shell $(srctree)/scripts/package/deb-build-option) 	deepin_loongarch_desktop_defconfig  all  -j$(shell nproc)
-+else ifneq (,$(filter loongarch64,$(DEB_HOST_ARCH)))
 +	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} 	KERNELRELEASE=$(KERNELRELEASE) 	$(shell $(srctree)/scripts/package/deb-build-option) 	deepin_loongarch_desktop_defconfig  all  -j$(shell nproc)
 +else ifneq (,$(filter mips64el,$(DEB_HOST_ARCH)))
 +	$(MAKE) -f $(srctree)/Makefile ARCH=${BUILD_ARCH} 	KERNELRELEASE=$(KERNELRELEASE) 	$(shell $(srctree)/scripts/package/deb-build-option) 	deepin_mips_loongson4000_desktop_defconfig  all  -j$(shell nproc)
@@ -286,5 +286,5 @@ index 000000000000..9e4ddc4ab0da
 +diff-ignore
 +extend-diff-ignore = .*
 -- 
-2.40.1
+2.43.0
 
