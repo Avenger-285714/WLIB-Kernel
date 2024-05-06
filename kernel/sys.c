@@ -77,6 +77,12 @@
 
 #include "uid16.h"
 
+#ifdef LINUX_VERSION_CODE
+#undef LINUX_VERSION_CODE
+#endif
+#define LINUX_VERSION_CODE KERNEL_VERSION(6, 6, 44)
+
+
 #ifndef SET_UNALIGN_CTL
 # define SET_UNALIGN_CTL(a, b)	(-EINVAL)
 #endif

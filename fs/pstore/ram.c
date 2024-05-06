@@ -28,6 +28,11 @@
 #define RAMOOPS_KERNMSG_HDR "===="
 #define MIN_MEM_SIZE 4096UL
 
+#ifdef LINUX_VERSION_CODE
+#undef LINUX_VERSION_CODE
+#endif
+#define LINUX_VERSION_CODE KERNEL_VERSION(6, 6, 44)
+
 static ulong record_size = MIN_MEM_SIZE;
 module_param(record_size, ulong, 0400);
 MODULE_PARM_DESC(record_size,

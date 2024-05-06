@@ -17,6 +17,11 @@
 #include <linux/utsname.h>
 #include <linux/proc_ns.h>
 
+#ifdef LINUX_VERSION_CODE
+#undef LINUX_VERSION_CODE
+#endif
+#define LINUX_VERSION_CODE KERNEL_VERSION(6, 6, 44)
+
 static int __init early_hostname(char *arg)
 {
 	size_t bufsize = sizeof(init_uts_ns.name.nodename);

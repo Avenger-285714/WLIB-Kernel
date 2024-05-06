@@ -40,6 +40,11 @@
 #include <net/netkit.h>
 #include <net/tcx.h>
 
+#ifdef LINUX_VERSION_CODE
+#undef LINUX_VERSION_CODE
+#endif
+#define LINUX_VERSION_CODE KERNEL_VERSION(6, 6, 44)
+
 #define IS_FD_ARRAY(map) ((map)->map_type == BPF_MAP_TYPE_PERF_EVENT_ARRAY || \
 			  (map)->map_type == BPF_MAP_TYPE_CGROUP_ARRAY || \
 			  (map)->map_type == BPF_MAP_TYPE_ARRAY_OF_MAPS)

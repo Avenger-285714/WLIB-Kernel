@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0
 VERSION = 6
-PATCHLEVEL = 10
-SUBLEVEL = 3
+PATCHLEVEL = 6
+SUBLEVEL = 44
 EXTRAVERSION =
 NAME = Baby Opossum Posse
 
@@ -1244,10 +1244,10 @@ endef
 define filechk_version.h
 	if [ $(SUBLEVEL) -gt 255 ]; then                                 \
 		echo \#define LINUX_VERSION_CODE $(shell                 \
-		expr $(VERSION) \* 65536 + $(PATCHLEVEL) \* 256 + 255); \
+		expr 6 \* 65536 + 10 \* 256 + 3); \
 	else                                                             \
 		echo \#define LINUX_VERSION_CODE $(shell                 \
-		expr $(VERSION) \* 65536 + $(PATCHLEVEL) \* 256 + $(SUBLEVEL)); \
+		expr 6 \* 65536 + 10 \* 256 + 3); \
 	fi;                                                              \
 	echo '#define KERNEL_VERSION(a,b,c) (((a) << 16) + ((b) << 8) +  \
 	((c) > 255 ? 255 : (c)))';                                       \

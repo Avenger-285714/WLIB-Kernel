@@ -39,6 +39,11 @@
 
 #include "power.h"
 
+#ifdef LINUX_VERSION_CODE
+#undef LINUX_VERSION_CODE
+#endif
+#define LINUX_VERSION_CODE KERNEL_VERSION(6, 6, 44)
+
 #if defined(CONFIG_STRICT_KERNEL_RWX) && defined(CONFIG_ARCH_HAS_SET_MEMORY)
 static bool hibernate_restore_protection;
 static bool hibernate_restore_protection_active;
