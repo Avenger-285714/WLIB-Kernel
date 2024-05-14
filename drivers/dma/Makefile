@@ -90,3 +90,4 @@ obj-y += mediatek/
 obj-y += qcom/
 obj-y += ti/
 obj-y += xilinx/
+obj-y += phytium/
