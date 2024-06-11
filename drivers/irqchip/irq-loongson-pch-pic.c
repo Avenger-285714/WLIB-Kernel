@@ -28,6 +28,7 @@
 #define PCH_INT_HTVEC(irq)	(0x200 + irq)
 #define PCH_PIC_POL		0x3e0
 
+#define PIC_UNDEF_VECTOR	255
 #define PIC_COUNT_PER_REG	32
 #define PIC_REG_COUNT		2
 #define PIC_COUNT		(PIC_COUNT_PER_REG * PIC_REG_COUNT)
