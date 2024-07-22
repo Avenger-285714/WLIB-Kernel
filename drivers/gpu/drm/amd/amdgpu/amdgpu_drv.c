@@ -32,6 +32,7 @@
 #include <drm/drm_vblank.h>
 
 #include <linux/cc_platform.h>
+#include <linux/dmi.h>
 #include <linux/dynamic_debug.h>
 #include <linux/module.h>
 #include <linux/mmu_notifier.h>
@@ -3046,9 +3047,31 @@ static struct pci_driver amdgpu_kms_pci_driver = {
 	.dev_groups = amdgpu_sysfs_groups,
 };
 
+static int quirk_set_amdgpu_dpm_0(const struct dmi_system_id *dmi)
+{
+	amdgpu_dpm = 0;
+	pr_info("Identified '%s', set amdgpu_dpm to 0.\n", dmi->ident);
+	return 1;
+}
+
+static const struct dmi_system_id amdgpu_quirklist[] = {
+	{
+		.ident = "DS25 Desktop",
+		.matches = {
+			DMI_MATCH(DMI_BOARD_NAME, "THTF-SW831-1W-DS25_MB"),
+		},
+		.callback = quirk_set_amdgpu_dpm_0,
+	},
+	{}
+};
+
 static int __init amdgpu_init(void)
 {
 	int r;
+
+	/* quirks for some hardware, applied only when it's untouched */
+	if (amdgpu_dpm == -1)
+		dmi_check_system(amdgpu_quirklist);
 
 	if (drm_firmware_drivers_only())
 		return -EINVAL;
