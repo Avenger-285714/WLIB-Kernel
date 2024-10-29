@@ -258,6 +258,12 @@ L:	linux-acenic@sunsite.dk
 S:	Maintained
 F:	drivers/net/ethernet/alteon/acenic*
 
+ACER ASPIRE 1 EMBEDDED CONTROLLER DRIVER
+M:	Nikita Travkin <nikita@trvn.ru>
+S:	Maintained
+F:	Documentation/devicetree/bindings/platform/acer,aspire1-ec.yaml
+F:	drivers/platform/arm64/acer-aspire1-ec.c
+
 ACER ASPIRE ONE TEMPERATURE AND FAN DRIVER
 M:	Peter Kaestle <peter@piie.net>
 L:	platform-driver-x86@vger.kernel.org
@@ -883,6 +889,7 @@ F:	drivers/staging/media/sunxi/cedrus/
 
 ALPHA PORT
 M:	Richard Henderson <richard.henderson@linaro.org>
+M:	Ivan Kokshaysky <ink@jurassic.park.msu.ru>
 M:	Matt Turner <mattst88@gmail.com>
 L:	linux-alpha@vger.kernel.org
 S:	Odd Fixes
@@ -2274,6 +2281,12 @@ M:	Lukasz Majewski <lukma@denx.de>
 L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 S:	Maintained
 F:	arch/arm/mach-ep93xx/ts72xx.c
+
+ARM/CIRRUS LOGIC CLPS711X ARM ARCHITECTURE
+M:	Alexander Shiyan <shc_work@mail.ru>
+L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+S:	Odd Fixes
+N:	clps711x
 
 ARM/CIRRUS LOGIC EP93XX ARM ARCHITECTURE
 M:	Hartley Sweeten <hsweeten@visionengravers.com>
@@ -3823,6 +3836,14 @@ F:	Documentation/devicetree/bindings/leds/backlight
 F:	drivers/video/backlight/
 F:	include/linux/backlight.h
 F:	include/linux/pwm_backlight.h
+
+BAIKAL-T1 PVT HARDWARE MONITOR DRIVER
+M:	Serge Semin <fancer.lancer@gmail.com>
+L:	linux-hwmon@vger.kernel.org
+S:	Supported
+F:	Documentation/devicetree/bindings/hwmon/baikal,bt1-pvt.yaml
+F:	Documentation/hwmon/bt1-pvt.rst
+F:	drivers/hwmon/bt1-pvt.[ch]
 
 BARCO P50 GPIO DRIVER
 M:	Santosh Kumar Yadav <santoshkumar.yadav@barco.com>
@@ -6483,6 +6504,7 @@ F:	drivers/mtd/nand/raw/denali*
 
 DESIGNWARE EDMA CORE IP DRIVER
 M:	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+R:	Serge Semin <fancer.lancer@gmail.com>
 L:	dmaengine@vger.kernel.org
 S:	Maintained
 F:	drivers/dma/dw-edma/
@@ -9785,6 +9807,14 @@ F:	drivers/gpio/gpiolib-cdev.c
 F:	include/uapi/linux/gpio.h
 F:	tools/gpio/
 
+GRE DEMULTIPLEXER DRIVER
+M:	Dmitry Kozlov <xeb@mail.ru>
+L:	netdev@vger.kernel.org
+S:	Maintained
+F:	include/net/gre.h
+F:	net/ipv4/gre_demux.c
+F:	net/ipv4/gre_offload.c
+
 GRETH 10/100/1G Ethernet MAC device driver
 M:	Andreas Larsson <andreas@gaisler.com>
 L:	netdev@vger.kernel.org
@@ -13000,6 +13030,12 @@ S:	Maintained
 F:	drivers/ata/pata_arasan_cf.c
 F:	include/linux/pata_arasan_cf_data.h
 
+LIBATA PATA DRIVERS
+R:	Sergey Shtylyov <s.shtylyov@omp.ru>
+L:	linux-ide@vger.kernel.org
+F:	drivers/ata/ata_*.c
+F:	drivers/ata/pata_*.c
+
 LIBATA PATA FARADAY FTIDE010 AND GEMINI SATA BRIDGE DRIVERS
 M:	Linus Walleij <linus.walleij@linaro.org>
 L:	linux-ide@vger.kernel.org
@@ -13015,6 +13051,15 @@ S:	Maintained
 F:	drivers/ata/ahci_platform.c
 F:	drivers/ata/libahci_platform.c
 F:	include/linux/ahci_platform.h
+
+LIBATA SATA AHCI SYNOPSYS DWC CONTROLLER DRIVER
+M:	Serge Semin <fancer.lancer@gmail.com>
+L:	linux-ide@vger.kernel.org
+S:	Maintained
+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata.git
+F:	Documentation/devicetree/bindings/ata/baikal,bt1-ahci.yaml
+F:	Documentation/devicetree/bindings/ata/snps,dwc-ahci.yaml
+F:	drivers/ata/ahci_dwc.c
 
 LIBATA SATA PROMISE TX2/TX4 CONTROLLER DRIVER
 M:	Mikael Pettersson <mikpelinux@gmail.com>
@@ -14218,6 +14263,7 @@ T:	git git://linuxtv.org/media.git
 F:	drivers/media/platform/nxp/imx-pxp.[ch]
 
 MEDIA DRIVERS FOR ASCOT2E
+M:	Sergey Kozlov <serjk@netup.ru>
 M:	Abylay Ospan <aospan@amazon.com>
 L:	linux-media@vger.kernel.org
 S:	Supported
@@ -14235,6 +14281,7 @@ T:	git git://linuxtv.org/media.git
 F:	drivers/media/dvb-frontends/cxd2099*
 
 MEDIA DRIVERS FOR CXD2841ER
+M:	Sergey Kozlov <serjk@netup.ru>
 M:	Abylay Ospan <aospan@amazon.com>
 L:	linux-media@vger.kernel.org
 S:	Supported
@@ -14297,6 +14344,7 @@ T:	git git://linuxtv.org/media.git
 F:	drivers/media/dvb-frontends/helene*
 
 MEDIA DRIVERS FOR HORUS3A
+M:	Sergey Kozlov <serjk@netup.ru>
 M:	Abylay Ospan <aospan@amazon.com>
 L:	linux-media@vger.kernel.org
 S:	Supported
@@ -14306,6 +14354,7 @@ T:	git git://linuxtv.org/media.git
 F:	drivers/media/dvb-frontends/horus3a*
 
 MEDIA DRIVERS FOR LNBH25
+M:	Sergey Kozlov <serjk@netup.ru>
 M:	Abylay Ospan <aospan@amazon.com>
 L:	linux-media@vger.kernel.org
 S:	Supported
@@ -14322,6 +14371,7 @@ T:	git git://linuxtv.org/media.git
 F:	drivers/media/dvb-frontends/mxl5xx*
 
 MEDIA DRIVERS FOR NETUP PCI UNIVERSAL DVB devices
+M:	Sergey Kozlov <serjk@netup.ru>
 M:	Abylay Ospan <aospan@amazon.com>
 L:	linux-media@vger.kernel.org
 S:	Supported
@@ -14975,6 +15025,13 @@ F:	drivers/mtd/
 F:	include/linux/mtd/
 F:	include/uapi/mtd/
 
+MEMSENSING MICROSYSTEMS MSA311 DRIVER
+M:	Dmitry Rokosov <ddrokosov@sberdevices.ru>
+L:	linux-iio@vger.kernel.org
+S:	Maintained
+F:	Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml
+F:	drivers/iio/accel/msa311.c
+
 MEN A21 WATCHDOG DRIVER
 M:	Johannes Thumshirn <morbidrsa@gmail.com>
 L:	linux-watchdog@vger.kernel.org
@@ -15323,6 +15380,7 @@ F:	drivers/tty/serial/8250/8250_pci1xxxx.c
 
 MICROCHIP POLARFIRE FPGA DRIVERS
 M:	Conor Dooley <conor.dooley@microchip.com>
+R:	Vladimir Georgiev <v.georgiev@metrotek.ru>
 L:	linux-fpga@vger.kernel.org
 S:	Supported
 F:	Documentation/devicetree/bindings/fpga/microchip,mpf-spi-fpga-mgr.yaml
@@ -15577,6 +15635,17 @@ F:	arch/mips/
 F:	drivers/platform/mips/
 F:	include/dt-bindings/mips/
 
+MIPS BAIKAL-T1 PLATFORM
+M:	Serge Semin <fancer.lancer@gmail.com>
+L:	linux-mips@vger.kernel.org
+S:	Supported
+F:	Documentation/devicetree/bindings/bus/baikal,bt1-*.yaml
+F:	Documentation/devicetree/bindings/clock/baikal,bt1-*.yaml
+F:	drivers/bus/bt1-*.c
+F:	drivers/clk/baikal-t1/
+F:	drivers/memory/bt1-l2-ctl.c
+F:	drivers/mtd/maps/physmap-bt1-rom.[ch]
+
 MIPS BOSTON DEVELOPMENT BOARD
 M:	Paul Burton <paulburton@kernel.org>
 L:	linux-mips@vger.kernel.org
@@ -15589,6 +15658,7 @@ F:	include/dt-bindings/clock/boston-clock.h
 
 MIPS CORE DRIVERS
 M:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+M:	Serge Semin <fancer.lancer@gmail.com>
 L:	linux-mips@vger.kernel.org
 S:	Supported
 F:	drivers/bus/mips_cdmm.c
@@ -16566,6 +16636,12 @@ F:	drivers/pci/endpoint/functions/pci-epf-*ntb.c
 F:	include/linux/ntb.h
 F:	include/linux/ntb_transport.h
 F:	tools/testing/selftests/ntb/
+
+NTB IDT DRIVER
+M:	Serge Semin <fancer.lancer@gmail.com>
+L:	ntb@lists.linux.dev
+S:	Supported
+F:	drivers/ntb/hw/idt/
 
 NTB INTEL DRIVER
 M:	Dave Jiang <dave.jiang@intel.com>
@@ -18575,6 +18651,13 @@ F:	drivers/pps/
 F:	include/linux/pps*.h
 F:	include/uapi/linux/pps.h
 
+PPTP DRIVER
+M:	Dmitry Kozlov <xeb@mail.ru>
+L:	netdev@vger.kernel.org
+S:	Maintained
+W:	http://sourceforge.net/projects/accel-pptp
+F:	drivers/net/ppp/pptp.c
+
 PRESSURE STALL INFORMATION (PSI)
 M:	Johannes Weiner <hannes@cmpxchg.org>
 M:	Suren Baghdasaryan <surenb@google.com>
@@ -19683,6 +19766,7 @@ F:	drivers/i2c/busses/i2c-emev2.c
 RENESAS ETHERNET AVB DRIVER
 M:	Paul Barker <paul.barker.ct@bp.renesas.com>
 M:	Niklas Söderlund <niklas.soderlund@ragnatech.se>
+R:	Sergey Shtylyov <s.shtylyov@omp.ru>
 L:	netdev@vger.kernel.org
 L:	linux-renesas-soc@vger.kernel.org
 S:	Supported
@@ -19753,6 +19837,7 @@ F:	drivers/i2c/busses/i2c-sh_mobile.c
 
 RENESAS R-CAR SATA DRIVER
 M:	Geert Uytterhoeven <geert+renesas@glider.be>
+R:	Sergey Shtylyov <s.shtylyov@omp.ru>
 L:	linux-ide@vger.kernel.org
 L:	linux-renesas-soc@vger.kernel.org
 S:	Supported
@@ -19845,6 +19930,7 @@ F:	drivers/i2c/busses/i2c-rzv2m.c
 
 RENESAS SUPERH ETHERNET DRIVER
 M:	Niklas Söderlund <niklas.soderlund@ragnatech.se>
+R:	Sergey Shtylyov <s.shtylyov@omp.ru>
 L:	netdev@vger.kernel.org
 L:	linux-renesas-soc@vger.kernel.org
 S:	Supported
@@ -22549,10 +22635,18 @@ F:	drivers/tty/serial/8250/8250_lpss.c
 
 SYNOPSYS DESIGNWARE APB GPIO DRIVER
 M:	Hoan Tran <hoan@os.amperecomputing.com>
+M:	Serge Semin <fancer.lancer@gmail.com>
 L:	linux-gpio@vger.kernel.org
 S:	Maintained
 F:	Documentation/devicetree/bindings/gpio/snps,dw-apb-gpio.yaml
 F:	drivers/gpio/gpio-dwapb.c
+
+SYNOPSYS DESIGNWARE APB SSI DRIVER
+M:	Serge Semin <fancer.lancer@gmail.com>
+L:	linux-spi@vger.kernel.org
+S:	Supported
+F:	Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+F:	drivers/spi/spi-dw*
 
 SYNOPSYS DESIGNWARE AXI DMAC DRIVER
 M:	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>
@@ -23867,6 +23961,12 @@ M:	Bastien Nocera <hadess@hadess.net>
 L:	linux-input@vger.kernel.org
 S:	Maintained
 F:	drivers/hid/hid-udraw-ps3.c
+
+UFS FILESYSTEM
+M:	Evgeniy Dushistov <dushistov@mail.ru>
+S:	Maintained
+F:	Documentation/admin-guide/ufs.rst
+F:	fs/ufs/
 
 UHID USERSPACE HID IO DRIVER
 M:	David Rheinsberg <david@readahead.eu>
